@@ -5,8 +5,22 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+class LogReg(nn.Module):
+
+    def __init__(self, num_rows: int, block_size: int = 64):
+        super().__init__()
+        input_dim = num_rows * block_size
+        self.linear = nn.Linear(input_dim, 1)
+
+    def forward(self, x):
+        # x: (batch, num_rows, 64)
+        batch_size = x.size(0)
+        out = x.view(batch_size, -1)  # (batch, input_dim)
+        logit = self.linear(out)  # (batch, 1)
+        return logit.squeeze(-1)  # (batch,)
+
+
 class GiftMLP(nn.Module):
-    """M1: MLP ساده روی ورودی flatten شده."""
 
     def __init__(self, num_rows: int, block_size: int = 64):
         super().__init__()
@@ -28,7 +42,6 @@ class GiftMLP(nn.Module):
 
 
 class GiftConv1D(nn.Module):
-    """M2: Conv1D ساده بدون residual."""
 
     def __init__(self, num_rows: int, block_size: int = 64, base_channels: int = 64):
         super().__init__()
@@ -77,7 +90,6 @@ class ResidualBlock1D(nn.Module):
 
 
 class GiftResNet1D(nn.Module):
-    """M3: ResNet1D قوی‌تر."""
 
     def __init__(
         self,

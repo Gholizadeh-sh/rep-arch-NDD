@@ -4,23 +4,24 @@ import random
 from rectangle64_cipher import encrypt_rect64_80
 
 # =========================
-#  تنظیمات کلی
+# Settings
 # =========================
 
 N_SAMPLES = 2**16  # N = N_real + N_rand
 ROUNDS_LIST = [6]
-# MASTER_KEY_80 = random.getrandbits(80)
-MASTER_KEY_80 = 0x964135ABEC39742AA62E  # کلید اصلی ۸۰بیتی ثابت
 
-# برای reproducibility
+# KEY SETTINGS
+# MASTER_KEY_80 = random.getrandbits(80) # Random 80-bit master key
+MASTER_KEY_80 = 0x964135ABEC39742AA62E  # Fixed master key
+
 GLOBAL_SEED = 777
 
-# تفاوت برای R1 (یک تفاضل)
+# Single delta for R1
 DELTA_R1 = 0x0000000000000001
 
-# مجموعه‌ی تفاضل‌ها برای R2 (همون سبک چندتفاضلی قبلی)
+# Multiple deeltas for R2
 DELTAS_R2 = [
-    0x0000000000000000,  # delta_0 = 0 (مرجع)
+    0x0000000000000000,
     0x0000000000000001,
     0x0000000000000002,
     0x0000000000000010,
@@ -29,10 +30,9 @@ DELTAS_R2 = [
     0x0000000000000033,
     0x0000000000000F0F,
 ]
-# در نتیجه d = 8 و در R2 ما 7 ردیف (i=1..7) به عنوان سطرهای ماتریس داریم.
 
 # =========================
-#  توابع کمکی
+# Helper functions
 # =========================
 
 
@@ -41,13 +41,6 @@ def int_to_bits(x: int, n_bits: int = 64):
 
 
 def make_dataset_R1_single(num_samples: int, rounds: int, delta: int, seed: int):
-    """
-    Dataset R1:
-    - کلاس real: جفت (P, P ⊕ delta)
-    - کلاس random: دو plaintext مستقل
-    ورودی شبکه: C ⊕ C' به صورت یک ردیف ۶۴بیتی
-    X شکل: (N, 1, 64)
-    """
     random.seed(seed)
     np.random.seed(seed)
 
@@ -65,7 +58,7 @@ def make_dataset_R1_single(num_samples: int, rounds: int, delta: int, seed: int)
         Cp = encrypt_rect64_80(Pp, MASTER_KEY_80, rounds)
         diff = C ^ Cp
         bits = int_to_bits(diff, 64)
-        X.append([bits])  # یک ردیف
+        X.append([bits])
         y.append(1)
 
     # --- random samples (label = 0)
@@ -92,18 +85,11 @@ def make_dataset_R1_single(num_samples: int, rounds: int, delta: int, seed: int)
 
 
 def make_dataset_R2_multidiff(num_samples: int, rounds: int, deltas, seed: int):
-    """
-    Dataset R2:
-    - کلاس real: خانواده‌ی چندتفاضلی حول یک P پایه
-    - کلاس random: plaintextهای مستقل
-    ورودی: ماتریس ۷×۶۴ (برای ۸ تفاضل، delta_0 = 0)
-      X شکل: (N, d-1, 64) که d = len(deltas)
-    """
     random.seed(seed)
     np.random.seed(seed)
 
     d = len(deltas)
-    n_rows = d - 1  # چون سطرهای ماتریس D_i = C_i ⊕ C_0 برای i>=1
+    n_rows = d - 1
     n_real = num_samples // 2
     n_rand = num_samples - n_real
 
@@ -172,7 +158,7 @@ def main():
             delta=DELTA_R1,
             seed=GLOBAL_SEED + r + 100,
         )
-        fname1 = f"rect64_R1_single_r{r}_n{N_SAMPLES}_seed{GLOBAL_SEED}-3.npz"
+        fname1 = f"rect64_R1_single_r{r}_n{N_SAMPLES}_seed{GLOBAL_SEED}.npz"
         np.savez_compressed(fname1, X=X1, y=y1)
         print(
             f"Saved R1 dataset to {fname1} with X shape={X1.shape}, y shape={y1.shape}"
@@ -185,7 +171,7 @@ def main():
             deltas=DELTAS_R2,
             seed=GLOBAL_SEED + r + 200,
         )
-        fname2 = f"rect64_R2_multidiff_r{r}_n{N_SAMPLES}_seed{GLOBAL_SEED}-3.npz"
+        fname2 = f"rect64_R2_multidiff_r{r}_n{N_SAMPLES}_seed{GLOBAL_SEED}.npz"
         np.savez_compressed(fname2, X=X2, y=y2)
         print(
             f"Saved R2 dataset to {fname2} with X shape={X2.shape}, y shape={y2.shape}"

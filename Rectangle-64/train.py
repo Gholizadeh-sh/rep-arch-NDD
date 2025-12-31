@@ -1,4 +1,4 @@
-# train_gift64.py
+# train_rectangle-64.py
 
 import numpy as np
 import torch
@@ -6,14 +6,15 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader, random_split
 
-from models import GiftMLP, GiftConv1D, GiftResNet1D
+from models import MLP, Conv1D, ResNet1D, LogReg
 
 # =========================
 # Settings
 # =========================
 
-DATA_PATH = "rect64_R2_multidiff_r6_n65536_seed777-3.npz"
-MODEL_TYPE = "mlp"  # "mlp", "conv", "resnet"
+# Path to dataset
+DATA_PATH = "rect64_R2_multidiff_r6_n65536_seed248.npz"
+MODEL_TYPE = "mlp"  # "mlp", "conv", "resnet", "logreg"
 
 BATCH_SIZE = 128
 LR = 1e-3
@@ -25,11 +26,13 @@ SPLIT_SEED = 123
 
 def build_model(model_type: str, num_rows: int) -> nn.Module:
     if model_type == "mlp":
-        return GiftMLP(num_rows=num_rows)
+        return MLP(num_rows=num_rows)
     elif model_type == "conv":
-        return GiftConv1D(num_rows=num_rows)
+        return Conv1D(num_rows=num_rows)
     elif model_type == "resnet":
-        return GiftResNet1D(num_rows=num_rows)
+        return ResNet1D(num_rows=num_rows)
+    elif model_type == "logreg":
+        return LogReg(num_rows)
     else:
         raise ValueError(f"Unknown MODEL_TYPE: {model_type}")
 

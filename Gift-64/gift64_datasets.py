@@ -244,10 +244,10 @@ if __name__ == "__main__":
     r_start = 0
     r_end = r_start + rounds
 
-    n_real = 2**13  # 2048
+    n_real = 2**13
     n_random = 2**13
 
-    seed = 42
+    seed = 320
     random.seed(seed)
     master_key = random.getrandbits(128)
 
@@ -289,7 +289,7 @@ if __name__ == "__main__":
     print("X2 shape:", X2.shape, "y2 shape:", y2.shape)
 
     # ---------- R1: single-diff ----------
-    delta_single = 0x0000000000000001  # یک ∆ ساده
+    delta_single = 0x0000000000000001
 
     X1, y1 = generate_binary_dataset_single_diff(
         n_real=n_real,
@@ -298,10 +298,10 @@ if __name__ == "__main__":
         key=master_key,
         r_start=r_start,
         r_end=r_end,
-        seed=seed + 1,
+        seed=seed,
     )
 
-    out_path_R1 = f"gift64_R1_single_r{rounds}_n{n_real+n_random}_seed{seed+1}.npz"
+    out_path_R1 = f"gift64_R1_single_r{rounds}_n{n_real+n_random}_seed{seed}.npz"
     np.savez_compressed(
         out_path_R1,
         X=X1,
@@ -309,7 +309,7 @@ if __name__ == "__main__":
         rounds=rounds,
         mode="R1_single",
         delta=np.uint64(delta_single),
-        seed=seed + 1,
+        seed=seed,
     )
     print("Saved R1 dataset to:", out_path_R1)
     print("X1 shape:", X1.shape, "y1 shape:", y1.shape)

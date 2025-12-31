@@ -6,14 +6,15 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader, random_split
 
-from models import GiftMLP, GiftConv1D, GiftResNet1D
+from models import GiftMLP, GiftConv1D, GiftResNet1D, LogReg
 
 # =========================
 # Settings
 # =========================
 
-DATA_PATH = "gift64_R2_multidiff_r5_n16384_seed42.npz"
-MODEL_TYPE = "mlp"  # "mlp", "conv", "resnet"
+# Path to dataset
+DATA_PATH = "gift64_R2_multidiff_r5_n65536_seed42.npz"
+MODEL_TYPE = "logreg"  # "mlp", "conv", "resnet", "logreg"
 
 BATCH_SIZE = 128
 LR = 1e-3
@@ -28,6 +29,8 @@ def build_model(model_type: str, num_rows: int) -> nn.Module:
         return GiftConv1D(num_rows=num_rows)
     elif model_type == "resnet":
         return GiftResNet1D(num_rows=num_rows)
+    elif model_type == "logreg":
+        return LogReg(num_rows)
     else:
         raise ValueError(f"Unknown MODEL_TYPE: {model_type}")
 
