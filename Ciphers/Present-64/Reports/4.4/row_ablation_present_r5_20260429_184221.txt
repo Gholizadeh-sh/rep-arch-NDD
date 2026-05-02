@@ -1,0 +1,37 @@
+=== ROW ABLATION REPORT ===
+
+tag: present_r5
+
+[CONFIG]
+npz_r2: Ciphers/Present-64/Database/present64_R2_r5_s1282861426.npz
+split_seed: 1234
+test_ratio: 0.2
+use_top_rows_by_score: False
+classifier: Models.models.LogReg
+batch_size: 128
+lr: 0.001
+epochs: 20
+
+[DATASET METADATA]
+key: 543570927855723693249657
+seed: 1282861426
+rounds: 5
+deltas: [0, 1, 2, 16, 4294967297, 65544, 51, 3855]
+
+[DATA SHAPES]
+full_shape: (65536, 7, 64)
+train_shape: (52429, 7, 64)
+test_shape: (13107, 7, 64)
+
+[SUMMARY]
+best_k: 7
+best_acc: 0.717556
+best_adv: 0.217556
+best_rows: [0, 1, 2, 3, 4, 5, 6]
+
+[RESULTS]
+k	rows	acc	adv	precision	recall	specificity	tp	tn	fp	fn
+1	[0]	0.630503	0.130503	0.647240	0.576759	0.684452	3787	4477	2064	2779
+2	[0, 1]	0.666590	0.166590	0.677900	0.637222	0.696071	4184	4553	1988	2382
+4	[0, 1, 2, 3]	0.694285	0.194285	0.712365	0.653670	0.735056	4292	4808	1733	2274
+7	[0, 1, 2, 3, 4, 5, 6]	0.717556	0.217556	0.723053	0.706975	0.728176	4642	4763	1778	1924

@@ -1,0 +1,37 @@
+=== ROW ABLATION REPORT ===
+
+tag: speck_r5
+
+[CONFIG]
+npz_r2: Ciphers/Speck-64/Database/speck64_R2_r5_s2078877062.npz
+split_seed: 1234
+test_ratio: 0.2
+use_top_rows_by_score: False
+classifier: Models.models.LogReg
+batch_size: 128
+lr: 0.001
+epochs: 20
+
+[DATASET METADATA]
+key: 132700422768683919029096291343433878185
+seed: 2078877062
+rounds: 5
+deltas: [0, 1, 2, 16, 4294967297, 65544, 51, 3855]
+
+[DATA SHAPES]
+full_shape: (65536, 7, 64)
+train_shape: (52429, 7, 64)
+test_shape: (13107, 7, 64)
+
+[SUMMARY]
+best_k: 7
+best_acc: 0.673762
+best_adv: 0.173762
+best_rows: [0, 1, 2, 3, 4, 5, 6]
+
+[RESULTS]
+k	rows	acc	adv	precision	recall	specificity	tp	tn	fp	fn
+1	[0]	0.629206	0.129206	0.629671	0.610075	0.647975	3960	4287	2329	2531
+2	[0, 1]	0.648966	0.148966	0.657658	0.607302	0.689843	3942	4564	2052	2549
+4	[0, 1, 2, 3]	0.669490	0.169490	0.663486	0.674935	0.664148	4381	4394	2222	2110
+7	[0, 1, 2, 3, 4, 5, 6]	0.673762	0.173762	0.680522	0.643198	0.703748	4175	4656	1960	2316

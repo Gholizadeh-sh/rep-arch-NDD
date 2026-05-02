@@ -1,0 +1,37 @@
+=== ROW ABLATION REPORT ===
+
+tag: rectangle_r5
+
+[CONFIG]
+npz_r2: Ciphers/Rectangle-64/Database/rect64_R2_r5_s930578756.npz
+split_seed: 1234
+test_ratio: 0.2
+use_top_rows_by_score: False
+classifier: Models.models.LogReg
+batch_size: 128
+lr: 0.001
+epochs: 20
+
+[DATASET METADATA]
+key: 924828901025689211643617
+seed: 930578756
+rounds: 5
+deltas: [0, 1, 2, 16, 4294967297, 65544, 51, 3855]
+
+[DATA SHAPES]
+full_shape: (65536, 7, 64)
+train_shape: (52429, 7, 64)
+test_shape: (13107, 7, 64)
+
+[SUMMARY]
+best_k: 7
+best_acc: 0.918746
+best_adv: 0.418746
+best_rows: [0, 1, 2, 3, 4, 5, 6]
+
+[RESULTS]
+k	rows	acc	adv	precision	recall	specificity	tp	tn	fp	fn
+1	[0]	0.722515	0.222515	0.745341	0.683454	0.762279	4519	4951	1544	2093
+2	[0, 1]	0.784161	0.284161	0.823168	0.728675	0.840647	4818	5460	1035	1794
+4	[0, 1, 2, 3]	0.908217	0.408217	0.927724	0.887175	0.929638	5866	6038	457	746
+7	[0, 1, 2, 3, 4, 5, 6]	0.918746	0.418746	0.932481	0.904416	0.933333	5980	6062	433	632

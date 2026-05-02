@@ -27,3 +27,4 @@ Thumbs.db
 *.npz
 results/
 outputs/
+Database/

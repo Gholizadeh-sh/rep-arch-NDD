@@ -1,0 +1,39 @@
+=== ROW ABLATION REPORT ===
+
+tag: gift_r5
+
+[CONFIG]
+npz_r2: Ciphers/Gift-64/Database/gift64_R2_r5_s1106099994.npz
+split_seed: 1234
+test_ratio: 0.2
+use_top_rows_by_score: False
+classifier: Models.models.LogReg
+batch_size: 128
+lr: 0.001
+epochs: 20
+
+[DATASET METADATA]
+key: 74081035696864537650651937298042696891
+seed: 1106099994
+rounds: 5
+deltas: [0, 1, 2, 16, 4294967297, 65544, 51, 3855]
+use_differences: 1
+include_base_row: 0
+
+[DATA SHAPES]
+full_shape: (65536, 7, 64)
+train_shape: (52429, 7, 64)
+test_shape: (13107, 7, 64)
+
+[SUMMARY]
+best_k: 7
+best_acc: 0.748684
+best_adv: 0.248684
+best_rows: [0, 1, 2, 3, 4, 5, 6]
+
+[RESULTS]
+k	rows	acc	adv	precision	recall	specificity	tp	tn	fp	fn
+1	[0]	0.656825	0.156825	0.689093	0.586675	0.728719	3892	4717	1756	2742
+2	[0, 1]	0.705348	0.205348	0.722901	0.677570	0.733817	4495	4750	1723	2139
+4	[0, 1, 2, 3]	0.744640	0.244640	0.777571	0.694001	0.796539	4604	5156	1317	2030
+7	[0, 1, 2, 3, 4, 5, 6]	0.748684	0.248684	0.762002	0.732137	0.765642	4857	4956	1517	1777
