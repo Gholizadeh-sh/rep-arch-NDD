@@ -3,7 +3,6 @@ import random
 import secrets
 from gift64_cipher import gift64_encrypt
 
-
 # =========================
 # FAST BIT CONVERSION
 # =========================
