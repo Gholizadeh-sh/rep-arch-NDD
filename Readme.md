@@ -1,4 +1,4 @@
-# Rep vs. Arch in NDD
+# Rep vs. Arch in Neural Differential Distinguisher
 
 Codebase for experiments on **Representation vs. Architecture in Neural Differential Distinguishers**.
 
